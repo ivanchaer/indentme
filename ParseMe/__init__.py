@@ -200,7 +200,7 @@ class ParseMe():
 
 
       # If a style tag is ending (eg. </style>)
-      if self.status['index'] + 7 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 7] == '</style' and self.status['attributeIsOpen'] == False and self.status['commentTagOpen'] == True:
+      if self.status['index'] + 8 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 8] == '</style>' and self.status['attributeIsOpen'] == False and self.status['styleTagOpen'] == True:
         self.hook_end_style_tag()
 
       # If a style tag is starting (eg. <style>)
@@ -209,7 +209,7 @@ class ParseMe():
 
 
       # If a script tag is ending (eg. </script>)
-      if self.status['index'] + 8 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 8] == '</script' and self.status['attributeIsOpen'] == False and self.status['commentTagOpen'] == True:
+      if self.status['index'] + 9 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 9] == '</script>' and self.status['attributeIsOpen'] == False and self.status['scriptTagOpen'] == True:
         self.hook_end_script_tag()
 
       # If a script tag is starting (eg. <script>)
