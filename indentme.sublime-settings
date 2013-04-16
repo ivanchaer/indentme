@@ -1,0 +1,46 @@
+{
+  "tag-libraries": {
+    
+    "html-tags": {
+
+      "default" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : true
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : true
+        },
+        "case" : "lowercase"
+      },
+
+      "span" : {
+        "line-break" : {
+          "before" : false,
+          "after" : false,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
+      "h1" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      }
+    }
+  }
+}

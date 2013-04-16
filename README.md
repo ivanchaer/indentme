@@ -1,4 +1,4 @@
-indentme
+Indent me
 ========
 
-HTML automatic indentation plugin for sublime
+Automatic HTML indentation plugin for sublime
