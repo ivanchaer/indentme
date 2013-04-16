@@ -152,7 +152,8 @@ class IndentMe(ParseMe):
     self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
     self.modifications[(self.status['index'] - 1, 'br')] = True
   def handle_end_script_closure_tag(self):
-    self.status['breakAfterChar'] = True
+    self.modifications['']
+    self.status[(self.status['index'], 'message')] = '!!!'
     self.status['indentAfterChar'] = True
 
 
@@ -182,6 +183,8 @@ class IndentMe(ParseMe):
     self.status['breakAfterChar'] = False
     self.status['indentAfterChar'] = False
     
+  def handle_start_parsing(self):
+    self.modifications = {}
 
   def handle_end_parsing(self):
     return self.put_indented_file()

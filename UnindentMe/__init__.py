@@ -54,6 +54,9 @@ class UnindentMe(ParseMe):
 
     self.tagMap[self.status['index']] = 'content'
 
+  def handle_start_parsing(self):
+    self.tagMap = {}
+
   def handle_end_parsing(self):
 
     return self.put_indented_file()

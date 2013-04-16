@@ -88,6 +88,9 @@ class ParseMe():
   def handle_end_iteration(self):
     pass
 
+  def handle_start_parsing(self):
+    pass
+
   def handle_end_parsing(self):
     pass
 
@@ -188,6 +191,9 @@ class ParseMe():
   def hook_end_iteration(self):
     self.handle_end_iteration()
 
+  def hook_start_parsing(self):
+    self.handle_start_parsing()
+
   def hook_end_parsing(self):
     self.handle_end_parsing()
 
@@ -197,6 +203,9 @@ class ParseMe():
   #
   # ................................................................
   def run(self):
+
+    # Hook for when the parsing starts
+    self.hook_start_parsing()
 
     for self.status['index'] in range(len(self.status['originalFileStr'])):
 
@@ -255,8 +264,11 @@ class ParseMe():
 
             # If a tag is being ended
             elif self.status['char'] == '>':
+              # If the tag being ended is <script>
               if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'script':
                 self.hook_end_script_closure_tag()
+
+              # If the tag being ended is <style>
               if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'style':
                 self.hook_end_style_closure_tag()
 
