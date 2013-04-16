@@ -141,17 +141,17 @@ class IndentMe(ParseMe):
     self.status['breakAfterChar'] = True
     self.status['indentAfterChar'] = True
 
-  def handle_start_style_tag(self):
+  def handle_start_open_style_tag(self):
     self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
     self.modifications[(self.status['index'] - 1, 'br')] = True
-  def handle_end_style_tag(self):
+  def handle_end_style_closure_tag(self):
     self.status['breakAfterChar'] = True
     self.status['indentAfterChar'] = True
 
-  def handle_start_script_tag(self):
+  def handle_start_script_open_tag(self):
     self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
     self.modifications[(self.status['index'] - 1, 'br')] = True
-  def handle_end_script_tag(self):
+  def handle_end_script_closure_tag(self):
     self.status['breakAfterChar'] = True
     self.status['indentAfterChar'] = True
 

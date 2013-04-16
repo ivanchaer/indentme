@@ -67,16 +67,22 @@ class ParseMe():
   def handle_end_comment_tag(self):
     pass
 
-  def handle_start_style_tag(self):
+  def handle_start_open_style_tag(self):
     pass
 
-  def handle_end_style_tag(self):
+  def handle_start_style_closure_tag(self):
     pass
 
-  def handle_start_script_tag(self):
+  def handle_end_style_closure_tag(self):
     pass
 
-  def handle_end_script_tag(self):
+  def handle_start_script_open_tag(self):
+    pass
+
+  def handle_start_script_closure_tag(self):
+    pass
+
+  def handle_end_script_closure_tag(self):
     pass
 
   def handle_end_iteration(self):
@@ -157,21 +163,27 @@ class ParseMe():
     self.status['commentTagOpen'] = False
     self.handle_end_comment_tag()
 
-  def hook_start_style_tag(self):
+  def hook_start_open_style_tag(self):
     self.status['styleTagOpen'] = True
-    self.handle_start_style_tag()
+    self.handle_start_open_style_tag()
 
-  def hook_end_style_tag(self):
+  def hook_start_style_closure_tag(self):
     self.status['styleTagOpen'] = False
-    self.handle_end_style_tag()
+    self.handle_start_style_closure_tag()
 
-  def hook_start_script_tag(self):
+  def hook_end_style_closure_tag(self):
+    self.handle_end_style_closure_tag()
+
+  def hook_start_script_open_tag(self):
     self.status['scriptTagOpen'] = True
-    self.handle_start_script_tag()
+    self.handle_start_script_open_tag()
 
-  def hook_end_script_tag(self):
+  def hook_start_script_closure_tag(self):
     self.status['scriptTagOpen'] = False
-    self.handle_end_script_tag()
+    self.handle_start_script_closure_tag()
+
+  def hook_end_script_closure_tag(self):
+    self.handle_end_script_closure_tag()
 
   def hook_end_iteration(self):
     self.handle_end_iteration()
@@ -199,22 +211,22 @@ class ParseMe():
         self.hook_start_comment_tag()
 
 
-      # If a style tag is ending (eg. </style>)
-      if self.status['index'] + 8 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 8] == '</style>' and self.status['attributeIsOpen'] == False and self.status['styleTagOpen'] == True:
-        self.hook_end_style_tag()
+      # If a style closure tag is starting (eg. </style>)
+      if self.status['index'] + 8 < len(self.status['originalFileStr']) and self.status['char'] == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 8] == '</style>' and self.status['attributeIsOpen'] == False and self.status['styleTagOpen'] == True:
+        self.hook_start_style_closure_tag()
 
-      # If a style tag is starting (eg. <style>)
+      # If a style opening tag is starting (eg. <style>)
       elif self.status['index'] + 6 < len(self.status['originalFileStr']) and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 6] == '<style' and self.status['attributeIsOpen'] == False:
-        self.hook_start_style_tag()
+        self.hook_start_open_style_tag()
 
 
-      # If a script tag is ending (eg. </script>)
-      if self.status['index'] + 9 < len(self.status['originalFileStr']) == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 9] == '</script>' and self.status['attributeIsOpen'] == False and self.status['scriptTagOpen'] == True:
-        self.hook_end_script_tag()
+      # If a script closure tag is starting (eg. </script>)
+      if self.status['index'] + 9 < len(self.status['originalFileStr']) and self.status['char'] == '<' and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 9] == '</script>' and self.status['attributeIsOpen'] == False and self.status['scriptTagOpen'] == True:
+        self.hook_start_script_closure_tag()
 
-      # If a script tag is starting (eg. <script>)
+      # If a script opening tag is starting (eg. <script>)
       elif self.status['index'] + 7 < len(self.status['originalFileStr']) and self.status['originalFileStr'][self.status['index'] : self.status['index'] + 7] == '<script' and self.status['attributeIsOpen'] == False:
-        self.hook_start_script_tag()
+        self.hook_start_script_open_tag()
 
 
       if self.status['commentTagOpen'] == False and self.status['styleTagOpen'] == False and self.status['scriptTagOpen'] == False:
@@ -243,6 +255,11 @@ class ParseMe():
 
             # If a tag is being ended
             elif self.status['char'] == '>':
+              if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'script':
+                self.hook_end_script_closure_tag()
+              if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'style':
+                self.hook_end_style_closure_tag()
+
               self.hook_end_tag()
 
           # If an attribute is being closed

@@ -64,16 +64,16 @@ class UnindentMe(ParseMe):
   def handle_end_comment_tag(self):
     self.tagMap[self.status['index'] + 1] = 'tag'
 
-  def handle_start_style_tag(self):
+  def handle_start_open_style_tag(self):
     self.tagMap[self.status['index']] = 'content'
 
-  def handle_end_style_tag(self):
+  def handle_start_style_closure_tag(self):
     self.tagMap[self.status['index'] + 1] = 'tag'
 
-  def handle_start_script_tag(self):
+  def handle_start_script_open_tag(self):
     self.tagMap[self.status['index']] = 'content'
 
-  def handle_end_script_tag(self):
+  def handle_start_script_closure_tag(self):
     self.tagMap[self.status['index'] + 1] = 'tag'
 
   
