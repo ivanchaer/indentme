@@ -3,6 +3,7 @@ import re
 
 class ParseMe():
   status = {}
+  optionalClosures = []
 
   def __init__(self, fileStr):
     # Initial parsing listeners status 
@@ -16,8 +17,9 @@ class ParseMe():
       'tagStartedOnThisIteration': False,
       'tagClosedOnThisIteration': False,
       'lastProcessedTag': '',
-      'openTagIsClosure': False,
-      'openTagIsAValidClosure': False,
+      'startedTagIsClosure': False,
+      'startedTagIsAnXHTMLClosure': False,
+      'startedTagIsAValidClosure': False,
       'lastOpenTagSettings': "default",
       'attributeIsOpen': False,
       'attrQuotes': '',
@@ -32,6 +34,8 @@ class ParseMe():
       'styleTagOpen': False,
       'scriptTagOpen': False
     }
+
+    self.optionalClosures = ['HTML', 'HEAD', 'BODY', 'P', 'DT', 'DD', 'LI', 'OPTION', 'THEAD', 'TH', 'TBODY', 'TR', 'TD', 'TFOOT', 'COLGROUP']
       
   
   # ................................................................
@@ -105,8 +109,14 @@ class ParseMe():
 
     self.status['tagStartedOnThisIteration'] = True
     self.status['lastProcessedTag'] = re.split(r'[\s|>]', self.status['originalFileStr'][self.status['index'] + 1 : ])[0]
-    
 
+    print(self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.optionalClosures))
+
+    if len(self.status['openTags']) > 0 and self.status['openTags'][-1] == self.status['lastProcessedTag'] and self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.optionalClosures):    
+      
+      # Remove the tag from the open tag array
+      self.status['openTags'].pop()
+      
     # Register last processed tag
     self.status['unfinishedTag'] = True
 
@@ -133,25 +143,35 @@ class ParseMe():
     self.handle_end_tag()
   
     # Reset listeners
-    self.status['openTagIsAValidClosure'] = False
-    self.status['openTagIsClosure'] = False
+    self.status['startedTagIsAnXHTMLClosure'] = False
+    self.status['startedTagIsClosure'] = False
 
   def hook_end_auto_closed_tag(self):
 
     self.status['unfinishedTag'] = False
+
+    self.status['openTags'].pop()
     
     self.handle_end_auto_closed_tag()
 
   def hook_start_closure_tag(self):
 
     self.status['unfinishedTag'] = True
-    self.status['openTagIsClosure'] = True
+    self.status['startedTagIsClosure'] = True
 
     self.status['lastProcessedTag'] = re.split(r'[\s|>]', self.status['originalFileStr'][self.status['index'] + 2 : ])[0]
 
     # If the closure matches the last open tag
     if len(self.status['openTags']) > 0 and self.status['openTags'][-1] == self.status['lastProcessedTag']:
-      self.status['openTagIsAValidClosure'] = True
+      # Remove the tag from the open tag array
+      self.status['openTags'].pop()
+      self.status['startedTagIsAnXHTMLClosure'] = True
+
+    elif len(self.status['openTags']) > 1 and self.status['openTags'][-2] == self.status['lastProcessedTag']:
+      # Remove the last 2 tags from the open tag array
+      self.status['openTags'].pop()
+      self.status['openTags'].pop()
+      self.status['startedTagIsAValidClosure'] = True
 
     self.handle_start_closure_tag()
 
@@ -265,11 +285,11 @@ class ParseMe():
             # If a tag is being ended
             elif self.status['char'] == '>':
               # If the tag being ended is <script>
-              if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'script':
+              if self.status['startedTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'script':
                 self.hook_end_script_closure_tag()
 
               # If the tag being ended is <style>
-              if self.status['openTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'style':
+              if self.status['startedTagIsClosure'] and len(self.status['openTags']) > 0 and self.status['openTags'][-1] == 'style':
                 self.hook_end_style_closure_tag()
 
               self.hook_end_tag()

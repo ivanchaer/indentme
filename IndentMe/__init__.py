@@ -97,22 +97,20 @@ class IndentMe(ParseMe):
     lastOpenTagSettings = self.get_tag_settings_id(self.status['lastOpenTagSettings'][0])
 
     # if it is a valid closure
-    if self.status['openTagIsAValidClosure']:
+    if self.status['startedTagIsAValidClosure']:
       # if the tag specifies this setting, insert break after tag closes
       if self.break_after_tag(lastProcessedTagSettings[0]): 
         self.status['breakAfterChar'] = True
         self.status['indentAfterChar'] = True
 
     # if it is not a closure
-    elif not self.status['openTagIsClosure']:
+    elif not self.status['startedTagIsClosure']:
       # if the tag specifies this setting, insert break after tag closes
       if self.break_inside_tag(lastProcessedTagSettings[0]): 
         self.status['breakAfterChar'] = True
         self.status['indentAfterChar'] = True
 
   def handle_end_auto_closed_tag(self):
-
-    self.status['openTags'].pop()
 
     # if the tag specifies this setting, insert break after tag closes
     if self.break_after_tag(self.status['lastOpenTagSettings'][0]): 
@@ -125,9 +123,7 @@ class IndentMe(ParseMe):
 
 
     # If the closure matches the last open tag
-    if self.status['openTagIsAValidClosure']:
-      # Remove the tag from the open tag array
-      self.status['openTags'].pop()
+    if self.status['startedTagIsAnXHTMLClosure']:
       
       if self.break_inside_tag(processedTagSettings[0]): 
         self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
@@ -153,7 +149,7 @@ class IndentMe(ParseMe):
     self.modifications[(self.status['index'] - 1, 'br')] = True
   def handle_end_script_closure_tag(self):
     self.modifications['']
-    self.status[(self.status['index'], 'message')] = '!!!'
+    #self.status[(self.status['index'], 'message')] = '!!!'
     self.status['indentAfterChar'] = True
 
 
