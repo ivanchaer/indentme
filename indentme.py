@@ -1,8 +1,19 @@
-import sublime, sublime_plugin, re
+import sublime, sublime_plugin, re, sys, imp, os
 
-from IndentMe import IndentMe
+sys.path.append(os.path.join(os.path.dirname(__file__), "indentme_modules"))
 
-from UnindentMe import UnindentMe
+# Make sure all dependencies are reloaded on upgrade
+if 'indentme_modules.reloader' in sys.modules:
+    imp.reload(sys.modules['indentme_modules.reloader'])
+import indentme_modules.reloader
+
+
+from indentme_modules.indent import IndentMe
+
+from indentme_modules.unindent import UnindentMe
+
+
+
 
 
 class indentmeCommand(sublime_plugin.TextCommand):

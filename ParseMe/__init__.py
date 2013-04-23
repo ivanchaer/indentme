@@ -7,7 +7,6 @@ class ParseMe():
 
   def __init__(self, fileStr):
     # Initial parsing listeners status 
-    
     self.status = {
       'char': '',
       'originalFileStr':  fileStr,
@@ -110,7 +109,7 @@ class ParseMe():
     self.status['tagStartedOnThisIteration'] = True
     self.status['lastProcessedTag'] = re.split(r'[\s|>]', self.status['originalFileStr'][self.status['index'] + 1 : ])[0]
 
-    print(self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.optionalClosures))
+    # print(self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.optionalClosures))
 
     if len(self.status['openTags']) > 0 and self.status['openTags'][-1] == self.status['lastProcessedTag'] and self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.optionalClosures):    
       
