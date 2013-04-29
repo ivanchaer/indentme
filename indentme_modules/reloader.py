@@ -13,7 +13,8 @@ for mod in sys.modules:
 mods_load_order = [
   'indentme_modules',
 	'indentme_modules.indent',
-	'indentme_modules.unindent'
+	'indentme_modules.unindent',
+  'indentme_modules.parser'
 ]
 
 for mod in mods_load_order:

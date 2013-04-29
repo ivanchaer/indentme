@@ -1,6 +1,6 @@
 import sublime, sublime_plugin, re
 
-from ParseMe import ParseMe
+from indentme_modules.parser import ParseMe
 
 # Load Settings
 
@@ -84,30 +84,17 @@ class IndentMe(ParseMe):
     self.status['lastOpenTagSettings'] = self.get_tag_settings_id(self.status['lastProcessedTag'])
 
     if self.break_before_tag(self.status['lastOpenTagSettings'][0]): 
-      self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
+      self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags']) - 1
       self.modifications[(self.status['index'] - 1, 'br')] = True
 
-    # Append tag to open tag list
-    self.status['openTags'].append(self.status['lastProcessedTag'])
-    
   def handle_end_tag(self):
 
     lastProcessedTagSettings = self.get_tag_settings_id(self.status['lastProcessedTag'])
     lastOpenTagSettings = self.get_tag_settings_id(self.status['lastOpenTagSettings'][0])
 
-    # if it is a valid closure
-    if self.status['startedTagIsAValidClosure']:
-      # if the tag specifies this setting, insert break after tag closes
-      if self.break_after_tag(lastProcessedTagSettings[0]): 
-        self.status['breakAfterChar'] = True
-        self.status['indentAfterChar'] = True
-
-    # if it is not a closure
-    elif not self.status['startedTagIsClosure']:
-      # if the tag specifies this setting, insert break after tag closes
-      if self.break_inside_tag(lastProcessedTagSettings[0]): 
-        self.status['breakAfterChar'] = True
-        self.status['indentAfterChar'] = True
+    if self.break_after_tag(lastProcessedTagSettings[0]): 
+      self.status['breakAfterChar'] = True
+      self.status['indentAfterChar'] = True
 
   def handle_end_auto_closed_tag(self):
 
@@ -120,13 +107,20 @@ class IndentMe(ParseMe):
 
     processedTagSettings = self.get_tag_settings_id(self.status['lastProcessedTag'])
 
-
     # If the closure matches the last open tag
     if self.status['startedTagIsAnXHTMLClosure']:
       
       if self.break_inside_tag(processedTagSettings[0]): 
         self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
         self.modifications[(self.status['index'] - 1, 'br')] = True
+
+    elif self.status['startedTagIsAValidClosure']:
+
+      if self.break_inside_tag(processedTagSettings[0]): 
+        self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags']) - 1
+        self.modifications[(self.status['index'] - 1, 'br')] = True
+
+      # self.modifications[(self.status['index'] - 1, 'message')] = '!!!'
 
   def handle_start_comment_tag(self):
     self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])

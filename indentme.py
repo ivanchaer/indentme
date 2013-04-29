@@ -12,7 +12,7 @@ from indentme_modules.indent import IndentMe
 
 from indentme_modules.unindent import UnindentMe
 
-
+from indentme_modules.parser import ParseMe
 
 
 
