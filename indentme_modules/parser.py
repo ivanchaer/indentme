@@ -156,7 +156,7 @@ class ParseMe():
 
     if not self.status['lastProcessedTag'].upper() in (OCT.upper() for OCT in self.nonClosingTags):
       self.status['openTags'].pop()
-    
+
     self.handle_end_auto_closed_tag()
 
   def hook_start_closure_tag(self):

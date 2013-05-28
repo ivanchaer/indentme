@@ -42,6 +42,19 @@
         "case" : "lowercase"
       },
 
+      "i" : {
+        "line-break" : {
+          "before" : false,
+          "after" : false,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
       "a" : {
         "line-break" : {
           "before" : false,
@@ -139,7 +152,35 @@
           "indented" : false
         },
         "case" : "lowercase"
+      },
+
+      "p" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
+      "br" : {
+        "line-break" : {
+          "before" : false,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
       }
+
+
     }
   }
 }

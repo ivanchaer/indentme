@@ -92,6 +92,8 @@ class IndentMe(ParseMe):
     lastProcessedTagSettings = self.get_tag_settings_id(self.status['lastProcessedTag'])
     lastOpenTagSettings = self.get_tag_settings_id(self.status['lastOpenTagSettings'][0])
 
+    # self.modifications[(self.status['index'] - 1, 'message')] = str(self.status['openTags'][-1:])
+
     if self.break_inside_tag(lastProcessedTagSettings[0]): 
       self.status['breakAfterChar'] = True
       self.status['indentAfterChar'] = True
