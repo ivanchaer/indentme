@@ -29,7 +29,106 @@
         "case" : "lowercase"
       },
 
+      "b" : {
+        "line-break" : {
+          "before" : false,
+          "after" : false,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
+      "a" : {
+        "line-break" : {
+          "before" : false,
+          "after" : false,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
+      "strong" : {
+        "line-break" : {
+          "before" : false,
+          "after" : false,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : false,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+
       "h1" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+      "h2" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+      "h3" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+      "h4" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+      "h5" : {
+        "line-break" : {
+          "before" : true,
+          "after" : true,
+          "inside" : false
+        },
+        "contents" : {
+          "formatted" : true,
+          "indented" : false
+        },
+        "case" : "lowercase"
+      },
+      "h6" : {
         "line-break" : {
           "before" : true,
           "after" : true,

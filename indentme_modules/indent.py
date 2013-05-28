@@ -92,7 +92,7 @@ class IndentMe(ParseMe):
     lastProcessedTagSettings = self.get_tag_settings_id(self.status['lastProcessedTag'])
     lastOpenTagSettings = self.get_tag_settings_id(self.status['lastOpenTagSettings'][0])
 
-    if self.break_after_tag(lastProcessedTagSettings[0]): 
+    if self.break_inside_tag(lastProcessedTagSettings[0]): 
       self.status['breakAfterChar'] = True
       self.status['indentAfterChar'] = True
 
@@ -111,16 +111,18 @@ class IndentMe(ParseMe):
     if self.status['startedTagIsAnXHTMLClosure']:
       
       if self.break_inside_tag(processedTagSettings[0]): 
+        # self.modifications[(self.status['index'] - 1, 'message')] = str(processedTagSettings)
         self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
         self.modifications[(self.status['index'] - 1, 'br')] = True
 
     elif self.status['startedTagIsAValidClosure']:
 
       if self.break_inside_tag(processedTagSettings[0]): 
+        
         self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags']) - 1
         self.modifications[(self.status['index'] - 1, 'br')] = True
 
-      # self.modifications[(self.status['index'] - 1, 'message')] = '!!!'
+      
 
   def handle_start_comment_tag(self):
     self.modifications[(self.status['index'] - 1, 'indent')] = len(self.status['openTags'])
